@@ -296,8 +296,8 @@ public class CustomViewAbove extends ViewGroup {
 	// of travel has on the overall snap duration.
 	float distanceInfluenceForSnapDuration(float f) {
 		f -= 0.5f; // center the values about 0.
-		f *= 0.3f * Math.PI / 2.0f;
-		return (float) Math.sin(f);
+		f *= 0.3f * android.util.FloatMath.PI / 2.0f;
+		return (float) android.util.FloatMath.sin(f);
 	}
 
 	public int getDestScrollX(int page) {
@@ -407,20 +407,20 @@ public class CustomViewAbove extends ViewGroup {
 
 		final int width = getBehindWidth();
 		final int halfWidth = width / 2;
-		final float distanceRatio = Math.min(1f, 1.0f * Math.abs(dx) / width);
+		final float distanceRatio = android.util.FloatMath.min(1f, 1.0f * android.util.FloatMath.abs(dx) / width);
 		final float distance = halfWidth + halfWidth *
 				distanceInfluenceForSnapDuration(distanceRatio);
 
 		int duration = 0;
-		velocity = Math.abs(velocity);
+		velocity = android.util.FloatMath.abs(velocity);
 		if (velocity > 0) {
-			duration = 4 * Math.round(1000 * Math.abs(distance / velocity));
+			duration = 4 * android.util.FloatMath.round(1000 * android.util.FloatMath.abs(distance / velocity));
 		} else {
-			final float pageDelta = (float) Math.abs(dx) / width;
+			final float pageDelta = (float) android.util.FloatMath.abs(dx) / width;
 			duration = (int) ((pageDelta + 1) * 100);
 			duration = MAX_SETTLE_DURATION;
 		}
-		duration = Math.min(duration, MAX_SETTLE_DURATION);
+		duration = android.util.FloatMath.min(duration, MAX_SETTLE_DURATION);
 
 		mScroller.startScroll(sx, sy, dx, dy, duration);
 		invalidate();
@@ -778,10 +778,10 @@ public class CustomViewAbove extends ViewGroup {
 			return;
 		final float x = MotionEventCompat.getX(ev, pointerIndex);
 		final float dx = x - mLastMotionX;
-		final float xDiff = Math.abs(dx);
+		final float xDiff = android.util.FloatMath.abs(dx);
 		final float y = MotionEventCompat.getY(ev, pointerIndex);
 		final float dy = y - mLastMotionY;
-		final float yDiff = Math.abs(dy);
+		final float yDiff = android.util.FloatMath.abs(dy);
 		if (xDiff > (isMenuOpen()?mTouchSlop/2:mTouchSlop) && xDiff > yDiff && thisSlideAllowed(dx)) {		
 			startDrag();
 			mLastMotionX = x;
@@ -803,20 +803,20 @@ public class CustomViewAbove extends ViewGroup {
 
 	private int determineTargetPage(float pageOffset, int velocity, int deltaX) {
 		int targetPage = mCurItem;
-		if (Math.abs(deltaX) > mFlingDistance && Math.abs(velocity) > mMinimumVelocity) {
+		if (android.util.FloatMath.abs(deltaX) > mFlingDistance && android.util.FloatMath.abs(velocity) > mMinimumVelocity) {
 			if (velocity > 0 && deltaX > 0) {
 				targetPage -= 1;
 			} else if (velocity < 0 && deltaX < 0){
 				targetPage += 1;
 			}
 		} else {
-			targetPage = (int) Math.round(mCurItem + pageOffset);
+			targetPage = (int) android.util.FloatMath.round(mCurItem + pageOffset);
 		}
 		return targetPage;
 	}
 
 	protected float getPercentOpen() {
-		return Math.abs(mScrollX-mContent.getLeft()) / getBehindWidth();
+		return android.util.FloatMath.abs(mScrollX-mContent.getLeft()) / getBehindWidth();
 	}
 
 	@Override
